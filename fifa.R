@@ -1,0 +1,345 @@
+# Importing Library
+library(readr)
+library(data.table)
+library(sqldf)
+library(radarchart)
+library(tidyr)
+library("knitr")
+library(DT)
+library(ggplot2)
+
+##Import data{#Importdata}
+
+FullData <- read_csv("C:/Users/vdwal/Desktop/mini project 5th sem/FIFA Dataset/FullData.csv")
+setDT(FullData)
+names(FullData)
+dim(FullData)
+kable(head(FullData)) 
+
+# Unique values per column
+#lapply(FullData, function(x) length(unique(x))) 
+
+
+##Which continent player's are best at which particular Attribute.
+
+####Approach(Player Attribute- Ball_Control, Dribbling, Marking, Attacking_Position, Acceleration, Speed, Stamina, Strength, Balance, Crossing).
+####1.Selecting players with each attribute.
+####2.Then group by Nationality.
+####3.Sum players each attribute by nationality group, list in descending order.
+
+library(dplyr)
+Data1_df<- FullData
+
+Ball_controldf <- arrange(Data1_df, desc(Ball_Control))
+Ball_controldf <- filter(Ball_controldf, Ball_Control >= 90)
+Ball_Control_list <- Ball_controldf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Ball_Control_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Dribbling_df <- arrange(Data1_df, desc(Dribbling))
+Dribbling_df <- filter(Dribbling_df, Dribbling >= 90)
+Dribbling_list <- Dribbling_df %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Dribbling_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Markingdf <- arrange(Data1_df, desc(Marking))
+Markingdf <- filter(Markingdf, Marking >= 90)
+Marking_list <- Markingdf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Marking_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Attacking_Positiondf <- arrange(Data1_df, desc(Attacking_Position))
+Attacking_Positiondf <- filter(Attacking_Positiondf, Attacking_Position >= 90)
+Attacking_Position_list <- Attacking_Positiondf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Attacking_Position_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Accelerationdf <- arrange(Data1_df, desc(Acceleration))
+Accelerationdf <- filter(Accelerationdf, Acceleration >= 90)
+Acceleration_list <- Accelerationdf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Acceleration_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Speeddf <- arrange(Data1_df, desc(Speed))
+Speeddf <- filter(Speeddf, Speed >= 90)
+Speed_list <- Speeddf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Speed_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Staminadf <- arrange(Data1_df, desc(Stamina))
+Staminadf <- filter(Staminadf, Stamina >= 90)
+Stamina_list <- Staminadf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Stamina_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Strengthdf <- arrange(Data1_df, desc(Strength))
+Strengthdf <- filter(Strengthdf, Strength >= 90)
+Strength_list <- Strengthdf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Strength_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Balancedf <- arrange(Data1_df, desc(Balance))
+Balancedf <- filter(Balancedf, Balance >= 90)
+Balance_list <- Balancedf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Balance_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+Crossingdf <- arrange(Data1_df, desc(Crossing))
+Crossingdf <- filter(Crossingdf, Crossing >= 90)
+Crossing_list <- Crossingdf %>% group_by(Nationality)  %>% summarise(n = n()) %>% arrange(desc(n))
+datatable(Crossing_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+#2.Looking at Continent level, Made a list of Continent_contries.
+  
+africa<-c('Algeria','Angola','Benin','Botswana','Burkina','Burundi','Cameroon','Cape Verde','Central African Republic','Chad','Comoros','Congo','Congo Democratic Republic of','Djibouti','Egypt','Equatorial Guinea','Eritrea','Ethiopia','Gabon','Gambia','Ghana','Guinea','Guinea-Bissau','Ivory Coast','Kenya','Lesotho','Liberia','Libya','Madagascar','Malawi','Mali','Mauritania','Mauritius','Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Swaziland','Tanzania','Togo','Tunisia','Uganda','Zambia','Zimbabwe','Burkina Faso')
+asia<-c('Afghanistan','Bahrain','Bangladesh','Bhutan','Brunei','Burma (Myanmar)','Cambodia','China','East Timor','India','Indonesia','Iran','Iraq','Israel','Japan','Jordan','Kazakhstan','North Korea','South Korea','Kuwait','Kyrgyzstan','Laos','Lebanon','Malaysia','Maldives','Mongolia','Nepal','Oman','Pakistan','Philippines','Qatar','Russian Federation','Saudi Arabia','Singapore','Sri Lanka','Syria','Tajikistan','Thailand','Turkey','Turkmenistan','United Arab Emirates','Uzbekistan','Vietnam','Yemen','Russia')
+europe<-c('Albania','Andorra','Armenia','Austria','Azerbaijan','Belarus','Belgium','Bosnia Herzegovina','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Georgia','Germany','Greece','Hungary','Iceland','Ireland','Italy','Latvia','Liechtenstein','Lithuania','Luxembourg','Macedonia','Malta','Moldova','Monaco','Montenegro','Netherlands','Norway','Poland','Portugal','Romania','San Marino','Serbia','Slovakia','Slovenia','Spain','Sweden','Switzerland','Ukraine','England','Vatican City','Republic of Ireland','Wales')
+north_america<-c('Antigua and Barbuda','Bahamas','Barbados','Belize','Canada','Costa Rica','Cuba','Dominica','Dominican Republic','El Salvador','Grenada','Guatemala','Haiti','Honduras','Jamaica','Mexico','Nicaragua','Panama','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Trinidad and Tobago','United States')
+oceania<-c('Australia','Fiji','Kiribati','Marshall Islands','Micronesia','Nauru','New Zealand','Palau','Papua New Guinea','Samoa','Solomon Islands','Tonga','Tuvalu','Vanuatu')
+south_america<-c('Argentina','Bolivia','Brazil','Chile','Colombia','Ecuador','Guyana','Paraguay','Peru','Suriname','Uruguay','Venezuela')
+others<-c('DR Congo', 'Korea Republic', 'Northern Ireland', 'Scotland', 'Guinea Bissau', 'Kosovo', 'São Tomé & Pr�?ncipe', 'Curacao', 'FYR Macedonia', 'FIFA16_NationName_215', 'Palestine', 'Bermuda', 'Central African Rep.', 'St Kitts Nevis', 'Trinidad & Tobago', 'China PR', 'Aruba', 'Guam', 'Chinese Taipei', 'Faroe Islands', 'Montserrat', 'Puerto Rico', 'Antigua & Barbuda', 'Korea DPR', 'Gibraltar', 'Timor-Leste', 'St Lucia')
+```
+
+#chainging country by continent name
+  
+library(dplyr)
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% africa] <- "africa"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% asia] <- "asia"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% europe] <- "europe"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% north_america] <- "north_america"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% oceania]<-"oceania"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% south_america]<-"south_america"
+Ball_Control_list$Nationality[Ball_Control_list$Nationality %in% others]<-"others"
+
+unique(Ball_Control_list$Nationality) # Check for nationality values
+
+Ball_Control_list <- Ball_Control_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Ball_Control_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% africa] <- "africa"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% asia] <- "asia"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% europe] <- "europe"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% north_america] <- "north_america"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% oceania]<-"oceania"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% south_america]<-"south_america"
+Dribbling_list$Nationality[Dribbling_list$Nationality %in% others]<-"others"
+
+unique(Dribbling_list$Nationality) # Check for nationality values
+
+Dribbling_list <- Dribbling_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Dribbling_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+
+Marking_list$Nationality[Marking_list$Nationality %in% africa] <- "africa"
+Marking_list$Nationality[Marking_list$Nationality %in% asia] <- "asia"
+Marking_list$Nationality[Marking_list$Nationality %in% europe] <- "europe"
+Marking_list$Nationality[Marking_list$Nationality %in% north_america] <- "north_america"
+Marking_list$Nationality[Marking_list$Nationality %in% oceania]<-"oceania"
+Marking_list$Nationality[Marking_list$Nationality %in% south_america]<-"south_america"
+Marking_list$Nationality[Marking_list$Nationality %in% others]<-"others"
+
+unique(Marking_list$Nationality) # Check for nationality values
+
+Marking_list <- Marking_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Marking_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% africa] <- "africa"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% asia] <- "asia"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% europe] <- "europe"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% north_america] <- "north_america"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% oceania]<-"oceania"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% south_america]<-"south_america"
+Attacking_Position_list$Nationality[Attacking_Position_list$Nationality %in% others]<-"others"
+
+unique(Attacking_Position_list$Nationality) # Check for nationality values
+
+Attacking_Position_list <- Attacking_Position_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Attacking_Position_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% africa] <- "africa"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% asia] <- "asia"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% europe] <- "europe"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% north_america] <- "north_america"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% oceania]<-"oceania"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% south_america]<-"south_america"
+Acceleration_list$Nationality[Acceleration_list$Nationality %in% others]<-"others"
+
+unique(Acceleration_list$Nationality) # Check for nationality values
+
+Acceleration_list <- Acceleration_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Acceleration_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+
+Speed_list$Nationality[Speed_list$Nationality %in% africa] <- "africa"
+Speed_list$Nationality[Speed_list$Nationality %in% asia] <- "asia"
+Speed_list$Nationality[Speed_list$Nationality %in% europe] <- "europe"
+Speed_list$Nationality[Speed_list$Nationality %in% north_america] <- "north_america"
+Speed_list$Nationality[Speed_list$Nationality %in% oceania]<-"oceania"
+Speed_list$Nationality[Speed_list$Nationality %in% south_america]<-"south_america"
+Speed_list$Nationality[Speed_list$Nationality %in% others]<-"others"
+
+unique(Speed_list$Nationality) # Check for nationality values
+
+Speed_list <- Speed_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Speed_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Stamina_list$Nationality[Stamina_list$Nationality %in% africa] <- "africa"
+Stamina_list$Nationality[Stamina_list$Nationality %in% asia] <- "asia"
+Stamina_list$Nationality[Stamina_list$Nationality %in% europe] <- "europe"
+Stamina_list$Nationality[Stamina_list$Nationality %in% north_america] <- "north_america"
+Stamina_list$Nationality[Stamina_list$Nationality %in% oceania]<-"oceania"
+Stamina_list$Nationality[Stamina_list$Nationality %in% south_america]<-"south_america"
+Stamina_list$Nationality[Stamina_list$Nationality %in% others]<-"others"
+
+unique(Stamina_list$Nationality) # Check for nationality values
+
+Stamina_list <- Stamina_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Stamina_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Strength_list$Nationality[Strength_list$Nationality %in% africa] <- "africa"
+Strength_list$Nationality[Strength_list$Nationality %in% asia] <- "asia"
+Strength_list$Nationality[Strength_list$Nationality %in% europe] <- "europe"
+Strength_list$Nationality[Strength_list$Nationality %in% north_america] <- "north_america"
+Strength_list$Nationality[Strength_list$Nationality %in% oceania]<-"oceania"
+Strength_list$Nationality[Strength_list$Nationality %in% south_america]<-"south_america"
+Strength_list$Nationality[Strength_list$Nationality %in% others]<-"others"
+
+unique(Strength_list$Nationality) # Check for nationality values
+
+Strength_list <- Strength_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Strength_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+
+Balance_list$Nationality[Balance_list$Nationality %in% africa] <- "africa"
+Balance_list$Nationality[Balance_list$Nationality %in% asia] <- "asia"
+Balance_list$Nationality[Balance_list$Nationality %in% europe] <- "europe"
+Balance_list$Nationality[Balance_list$Nationality %in% north_america] <- "north_america"
+Balance_list$Nationality[Balance_list$Nationality %in% oceania]<-"oceania"
+Balance_list$Nationality[Balance_list$Nationality %in% south_america]<-"south_america"
+Balance_list$Nationality[Balance_list$Nationality %in% others]<-"others"
+
+unique(Balance_list$Nationality) # Check for nationality values
+
+Balance_list <- Balance_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Balance_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+
+Crossing_list$Nationality[Crossing_list$Nationality %in% africa] <- "africa"
+Crossing_list$Nationality[Crossing_list$Nationality %in% asia] <- "asia"
+Crossing_list$Nationality[Crossing_list$Nationality %in% europe] <- "europe"
+Crossing_list$Nationality[Crossing_list$Nationality %in% north_america] <- "north_america"
+Crossing_list$Nationality[Crossing_list$Nationality %in% oceania]<-"oceania"
+Crossing_list$Nationality[Crossing_list$Nationality %in% south_america]<-"south_america"
+Crossing_list$Nationality[Crossing_list$Nationality %in% others]<-"others"
+
+unique(Crossing_list$Nationality) # Check for nationality values
+
+Crossing_list <- Crossing_list %>% group_by(Nationality) %>% summarise(n = n()) %>% arrange(desc(n)) 
+datatable(Crossing_list, style="bootstrap", class="table-condensed", options = list(dom = 'tp',scrollX = TRUE))
+
+ggplot(Speed_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Speed Group By Nationality') +
+  theme_bw()
+
+ggplot(Crossing_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Crossing Group By Nationality') +
+  theme_bw()
+
+
+ggplot(Balance_list, aes(x = n, y =  reorder(Nationality, n) )) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Balance Group By Nationality') +
+  theme_bw()
+
+ggplot(Strength_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Strength Group By Nationality') +
+  theme_bw()
+
+ggplot(Stamina_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Stamina Group By Nationality') +
+  theme_bw()
+
+ggplot(Acceleration_list, aes(x = n, y = reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Acceleration Group By Nationality') +
+  theme_bw()
+
+ggplot(Attacking_Position_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Attaacking Position Group By Nationality') +
+  theme_bw()
+
+ggplot(Marking_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Marking Group By Nationality') +
+  theme_bw()
+
+ggplot(Dribbling_list, aes(x = n, y = reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Dribbling Group By Nationality') + 
+  theme_bw()
+
+ggplot(Ball_Control_list, aes(x = n, y =  reorder(Nationality, n))) +
+  geom_bar(stat='identity',colour="white", fill = c("magenta")) +
+  labs(x = 'Count', y = 'Nationality', title = 'Ball Control Group By Nationality') +
+  theme_bw()
+
+##On Field Behaviour of Top 1000 Players.
+####Approach(Player Attribute- Aggression, Reactions, Attacking_Position, Interceptions, Vision, Composure, Agility).
+####Subsetting the required attribute in a Data Frame.
+Data <- subset(FullData, select = c("Aggression", "Reactions", "Attacking_Position", "Interceptions", "Vision", "Composure", "Agility"))
+Data_df <- tbl_df(Data)
+behave_df <- head(arrange(Data_df, Aggression, Reactions, Attacking_Position, Interceptions, Vision, Composure, Agility), n = 1000)
+
+require(reshape2)
+a <- melt(behave_df, id.vars = "Agility")
+
+ggplot(data = a, aes(x=variable, y=value)) + 
+  geom_jitter(aes(colour=variable))
+
+library(lubridate)
+library(plyr)
+# Creating the dataframe containing the required attribute
+Contract_period_df<- tbl_df(subset(FullData, select = c("Name","Club_Joining", "Contract_Expiry")))
+#Data frame having the contract Period from There Joining Date to Contract Expiry
+a = mdy(Contract_period_df$Club_Joining)
+club_joining_year <- year(a)
+CP <- Contract_period_df$Contract_Expiry - club_joining_year
+
+Contract_period <- CP
+
+data <- tbl_df(cbind(Contract_period_df, club_joining_year, Contract_period))
+
+# Grouping the Number of Players with Contract Period
+unique <- tbl_df(unique(data$Contract_period))
+frequency <- count(data, 'Contract_period')
+
+ggplot(frequency, aes(Contract_period,freq))+
+  geom_point(aes(colour = Contract_period))+
+  labs(x = 'Contract Period', y = 'No. of Players')
+
+## Age Density of FIFA Players {#AgeDensity}
+
+
+ggplot(FullData, aes(Age, fill = Age)) +
+  geom_density(position = "stack")
+
+## Radar Chart for Top 50 players
+
+library(radarchart)
+library(tidyr)
+#Selecting top players by rating from data
+top50 <- head(FullData, 50)
+
+radarDF <- top50 %>% select(Name, 20:53) %>% as.data.frame()
+
+radarDF <- gather(radarDF, key=Label, value=Score, -Name) %>%
+  spread(key=Name, value=Score)
+
+chartJSRadar(scores = radarDF, maxScale = 100, showToolTipLabel = TRUE)
